@@ -10,5 +10,8 @@ namespace FootballPredictionGame.Models
         public int PredictorId { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
+        public int Points { get; set; }
+
+        public virtual ICollection<Prediction> Predictions { get; set; }
     }
 }
