@@ -7,8 +7,8 @@ namespace FootballPredictionGame.Models
 {
     public class Predictor
     {
-        public int ID { get; set; }
+        public int PredictorId { get; set; }
         public string LastName { get; set; }
-        public string FirstMidName { get; set; }
+        public string FirstName { get; set; }
     }
 }
