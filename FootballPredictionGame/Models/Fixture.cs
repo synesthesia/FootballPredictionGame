@@ -17,6 +17,7 @@ namespace FootballPredictionGame.Models
 
         public virtual Team HomeTeam { get; set; }
         public virtual Team AwayTeam { get; set; }
+        public virtual ICollection<Prediction> Predictions { get; set; }
 
     }
 }
