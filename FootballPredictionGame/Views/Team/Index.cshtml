@@ -26,7 +26,8 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Flag)
+             <!-- @Html.DisplayFor(modelItem => item.Flag) -->
+            <img src="~/Content/Images/@Html.DisplayFor(model =>item.Flag)" style="height:30px;width:51px;" />
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.TeamId }) |
