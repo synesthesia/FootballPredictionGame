@@ -1,0 +1,51 @@
+﻿@model IEnumerable<FootballPredictionGame.Models.Prediction>
+
+@{
+    ViewBag.Title = "View";
+}
+
+<h2>View</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Fixture.FixtureId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Predictor.LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HomeResult)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AwayResult)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fixture.FixtureId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Predictor.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HomeResult)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AwayResult)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.PredictionId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.PredictionId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PredictionId })
+        </td>
+    </tr>
+}
+
+</table>

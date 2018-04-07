@@ -148,6 +148,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\FixturesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TeamController.cs" />
     <Compile Include="DAL\PredictionContext.cs" />
@@ -203,6 +204,12 @@
     <Content Include="Views\Team\Details.cshtml" />
     <Content Include="Views\Team\Edit.cshtml" />
     <Content Include="Views\Team\Index.cshtml" />
+    <Content Include="Views\Prediction\View.cshtml" />
+    <Content Include="Views\Fixtures\Create.cshtml" />
+    <Content Include="Views\Fixtures\Delete.cshtml" />
+    <Content Include="Views\Fixtures\Details.cshtml" />
+    <Content Include="Views\Fixtures\Edit.cshtml" />
+    <Content Include="Views\Fixtures\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

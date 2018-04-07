@@ -1,0 +1,57 @@
+﻿@model IEnumerable<FootballPredictionGame.Models.Fixture>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.HomeTeamId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AwayTeamId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GameDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HomeResult)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AwayResult)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.HomeTeamId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AwayTeamId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GameDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HomeResult)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AwayResult)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.FixtureId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.FixtureId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.FixtureId })
+        </td>
+    </tr>
+}
+
+</table>
