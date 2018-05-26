@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FootballPredictionGame.Models
 {
     public class Fixture
     {
         public int FixtureId { get; set; }
+
+        [ForeignKey("HomeTeam")]
         public int HomeTeamId { get; set; }
+        [ForeignKey("AwayTeam")]
         public int AwayTeamId { get; set; }    
         public DateTime GameDate { get; set; }
 

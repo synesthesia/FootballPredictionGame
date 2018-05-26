@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<FootballPredictionGame.Models.Fixture>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Fixtures";
 }
 
-<h2>Index</h2>
+<h2>Fixtures</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -12,10 +12,10 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.HomeTeamId)
+            @Html.DisplayNameFor(model => model.HomeTeam)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AwayTeamId)
+            @Html.DisplayNameFor(model => model.AwayTeam)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.GameDate)
@@ -32,10 +32,11 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.HomeTeamId)
+            //@Html.DisplayFor(modelItem => item.HomeTeamId)
+            @Html.DisplayFor(modelItem => item.HomeTeam.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.AwayTeamId)
+            @Html.DisplayFor(modelItem => item.AwayTeam.Name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.GameDate)

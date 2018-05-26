@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using FootballPredictionGame.DAL;
 using FootballPredictionGame.Models;
@@ -18,7 +14,11 @@ namespace FootballPredictionGame.Controllers
         // GET: Fixtures
         public ActionResult Index()
         {
-            return View(db.Fixtures.ToList());
+            IQueryable<Fixture> fixtures = db.Fixtures.Include(h => h.HomeTeam)
+                                                      .Include(h => h.AwayTeam);
+            var sql = fixtures.ToString();
+            var fixtureList = fixtures.ToList();
+            return View(fixtures.ToList());
         }
 
         // GET: Fixtures/Details/5
