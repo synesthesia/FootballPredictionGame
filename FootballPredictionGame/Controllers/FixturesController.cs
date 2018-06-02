@@ -39,6 +39,8 @@ namespace FootballPredictionGame.Controllers
         // GET: Fixtures/Create
         public ActionResult Create()
         {
+            PopulateHomeDropDownList();
+            PopulateAwayDropDownList();
             return View();
         }
 
