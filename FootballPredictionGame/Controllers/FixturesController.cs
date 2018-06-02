@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -12,13 +13,21 @@ namespace FootballPredictionGame.Controllers
         private PredictionContext db = new PredictionContext();
 
         // GET: Fixtures
-        public ActionResult Index()
+        public ActionResult Index(DateTime? SelectedDate)
         {
+            var fixtureDates = db.Fixtures.OrderBy(q => q.GameDate)
+                .ToList().Select(q => q.GameDate.Date.ToString("dd MMM yyyy")).Distinct()
+                .Select(q => new SelectListItem { Value = q, Text = q })
+                .ToList();
+
+            ViewBag.SelectedDate = fixtureDates;
+            DateTime fixDate = SelectedDate.GetValueOrDefault();
+
             IQueryable<Fixture> fixtures = db.Fixtures.Include(h => h.HomeTeam)
                                                       .Include(h => h.AwayTeam);
             var sql = fixtures.ToString();
-            var fixtureList = fixtures.ToList();
-            return View(fixtures.OrderBy(g => g.GameDate).ToList());
+            var fixtureList = fixtures.ToList().Where(c => !SelectedDate.HasValue || c.GameDate.Date == fixDate);
+            return View(fixtureList);
         }
 
         // GET: Fixtures/Details/5
