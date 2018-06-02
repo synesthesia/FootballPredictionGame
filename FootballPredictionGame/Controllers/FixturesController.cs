@@ -18,7 +18,7 @@ namespace FootballPredictionGame.Controllers
                                                       .Include(h => h.AwayTeam);
             var sql = fixtures.ToString();
             var fixtureList = fixtures.ToList();
-            return View(fixtures.ToList());
+            return View(fixtures.OrderBy(g => g.GameDate).ToList());
         }
 
         // GET: Fixtures/Details/5
@@ -71,6 +71,9 @@ namespace FootballPredictionGame.Controllers
             {
                 return HttpNotFound();
             }
+
+            PopulateHomeDropDownList(fixture.HomeTeamId);
+            PopulateAwayDropDownList(fixture.AwayTeamId);
             return View(fixture);
         }
 
@@ -87,7 +90,24 @@ namespace FootballPredictionGame.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+           
             return View(fixture);
+        }
+
+        private void PopulateHomeDropDownList(object selectedTeam = null)
+        {
+            var teamsQuery = from d in db.Teams
+                                   orderby d.Name
+                                   select d;
+            ViewBag.HomeTeamId = new SelectList(teamsQuery, "TeamId", "Name", selectedTeam);
+        }
+
+        private void PopulateAwayDropDownList(object selectedTeam = null)
+        {
+            var teamsQuery = from d in db.Teams
+                             orderby d.Name
+                             select d;
+            ViewBag.AwayTeamId = new SelectList(teamsQuery, "TeamId", "Name", selectedTeam);
         }
 
         // GET: Fixtures/Delete/5
