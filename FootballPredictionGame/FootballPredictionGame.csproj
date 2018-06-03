@@ -150,12 +150,22 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\FixturesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PredictorsController.cs" />
     <Compile Include="Controllers\TeamController.cs" />
     <Compile Include="DAL\PredictionContext.cs" />
     <Compile Include="DAL\PredictionInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805260338153_InitialCreate.cs" />
+    <Compile Include="Migrations\201805260338153_InitialCreate.Designer.cs">
+      <DependentUpon>201805260338153_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806022153008_PredictorEmail.cs" />
+    <Compile Include="Migrations\201806022153008_PredictorEmail.Designer.cs">
+      <DependentUpon>201806022153008_PredictorEmail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Fixture.cs" />
     <Compile Include="Models\Prediction.cs" />
     <Compile Include="Models\Predictor.cs" />
@@ -210,6 +220,11 @@
     <Content Include="Views\Fixtures\Details.cshtml" />
     <Content Include="Views\Fixtures\Edit.cshtml" />
     <Content Include="Views\Fixtures\Index.cshtml" />
+    <Content Include="Views\Predictors\Create.cshtml" />
+    <Content Include="Views\Predictors\Delete.cshtml" />
+    <Content Include="Views\Predictors\Details.cshtml" />
+    <Content Include="Views\Predictors\Edit.cshtml" />
+    <Content Include="Views\Predictors\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -227,6 +242,14 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201805260338153_InitialCreate.resx">
+      <DependentUpon>201805260338153_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806022153008_PredictorEmail.resx">
+      <DependentUpon>201806022153008_PredictorEmail.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -64,6 +65,15 @@ namespace FootballPredictionGame.Controllers
             {
                 db.Fixtures.Add(fixture);
                 db.SaveChanges();
+
+                var predictors = db.Predictors.ToList();
+
+                foreach (var predictor in predictors)
+                {
+                    db.Predictions.Add(new Prediction {PredictorId = predictor.PredictorId, FixtureId = fixture.FixtureId });
+                }
+                db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 
@@ -141,6 +151,14 @@ namespace FootballPredictionGame.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            List<Prediction> predictions = db.Predictions.Where(p => p.FixtureId == id).ToList();
+
+            foreach (var prediction in predictions)
+            {
+                db.Predictions.Remove(prediction);
+            }
+            db.SaveChanges();
+
             Fixture fixture = db.Fixtures.Find(id);
             db.Fixtures.Remove(fixture);
             db.SaveChanges();
