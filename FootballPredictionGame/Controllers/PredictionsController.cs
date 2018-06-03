@@ -2,6 +2,8 @@
 using FootballPredictionGame.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -15,7 +17,10 @@ namespace FootballPredictionGame.Controllers
         // GET: Predictions
         public ActionResult Index()
         {
-            var predictions = db.Predictions.Where(p => p.PredictorId == 3).ToList();
+            var predictions = db.Predictions.Where(p => p.PredictorId == 3)
+                .Include(p => p.Predictor)
+                .Include(p => p.Fixture)
+                .ToList();
 
             return View(predictions);
         }
@@ -23,11 +28,26 @@ namespace FootballPredictionGame.Controllers
         public JsonResult ChangeUser(Prediction model)
         {
             // Update model to your db
+            var prediction = db.Predictions.Where(p => p.PredictionId == model.PredictionId).SingleOrDefault();
+
+            // input validation
+            if (TryUpdateModel(prediction, "",
+                        new string[] { "HomeResult", "AwayResult" }))
+            {
+                try
+                {
+                    db.Entry(prediction).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                catch (RetryLimitExceededException /* dex */)
+                {
+                    //Log the error (uncomment dex variable name and add a line here to write a log.
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+                }
+            }
+
             string message = "Success";
             return Json(message, JsonRequestBehavior.AllowGet);
         }
-
-
-
     }
 }
