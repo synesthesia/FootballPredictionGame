@@ -150,6 +150,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\FixturesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PredictionsController.cs" />
     <Compile Include="Controllers\PredictorsController.cs" />
     <Compile Include="Controllers\TeamController.cs" />
     <Compile Include="DAL\PredictionContext.cs" />
@@ -184,10 +185,13 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery-1.12.4.intellisense.js" />
+    <Content Include="Scripts\jquery-1.12.4.js" />
+    <Content Include="Scripts\jquery-1.12.4.min.js" />
+    <Content Include="Scripts\jquery-1.12.4.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -214,7 +218,7 @@
     <Content Include="Views\Team\Details.cshtml" />
     <Content Include="Views\Team\Edit.cshtml" />
     <Content Include="Views\Team\Index.cshtml" />
-    <Content Include="Views\Prediction\View.cshtml" />
+    <Content Include="Views\Predictions\Index.cshtml" />
     <Content Include="Views\Fixtures\Create.cshtml" />
     <Content Include="Views\Fixtures\Delete.cshtml" />
     <Content Include="Views\Fixtures\Details.cshtml" />
@@ -241,7 +245,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201805260338153_InitialCreate.resx">

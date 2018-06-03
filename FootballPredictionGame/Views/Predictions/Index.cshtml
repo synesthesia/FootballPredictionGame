@@ -1,0 +1,118 @@
+﻿@model IEnumerable<FootballPredictionGame.Models.Prediction>
+@{
+    ViewBag.Title = "Predictions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .edit-mode {}
+    .edit-user {}
+    .edit-user display-mode {}
+    .save-user edit-mode {}
+    .display-mode {}
+    .cancel-user {}
+    .webgrid-table {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        font-weight: normal;
+        width: 650px;
+        display: table;
+        border-collapse: collapse;
+        border: solid px rgb(197, 197, 197);
+        background-color: white;
+    }
+
+        .webgrid-table td, th {
+            border: 1px solid #C5C5C5;
+            padding: 3px 7px 2px;
+        }
+
+    .webgrid-header, .webgrid-header a {
+        background-color: rgb(227, 227, 227);
+        color: black;
+        text-align: left;
+        text-decoration: none;
+    }
+
+    .webgrid-footer {
+    }
+
+    .webgrid-row-style {
+        padding: 3px 7px 2px;
+    }
+
+    .webgrid-alternating-row {
+        background-color: #F5F5F5;
+        padding: 3px 7px 2px;
+    }
+
+    .col1Width {
+        width: 50px;
+    }
+
+    .col2Width {
+        width: 200px;
+    }
+</style>
+<script type="text/javascript">
+    $(function () {
+        $('.edit-mode').hide();
+        $('.edit-user, .cancel-user').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            tr.find('.edit-mode, .display-mode').toggle();
+        });
+
+        $('.save-user').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            var Home = tr.find("#Home").val();
+            var Away = tr.find("#Away").val();
+            var PredictionID = tr.find("#PredictionID").html();
+            tr.find("#lblHome").text(Home);
+            tr.find("#lblAway").text(Away);
+            tr.find('.edit-mode, .display-mode').toggle();
+            var Prediction =
+                {
+                    "PredictionId": PredictionID,
+                    "HomeResult": Home,
+                    "AwayResult": Away
+                };
+            $.ajax({
+                url: '/User/ChangeUser/',
+                data: JSON.stringify(Prediction),
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    alert(data);
+                }
+            });
+
+        });
+    })
+</script>
+
+<h2>Predictions</h2>
+@{
+    var grid = new WebGrid(Model);
+}
+
+<div id="gridContent" style=" padding:20px; ">
+    @grid.GetHtml(
+            tableStyle: "webgrid-table",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            mode: WebGridPagerModes.All,
+            columns:
+                grid.Columns(
+                grid.Column("PredictionId", format: @<text>  <span class="display-mode">@item.PredictionId </span> <label id="PredictionID" class="edit-mode">@item.PredictionId</label> </text>, style: "col1Width"),
+                grid.Column("HomeResult", "Home", format: @<text>  <span class="display-mode"> <label id="lblHome">@item.HomeResult</label> </span> <input type="text" id="Home" value="@item.HomeResult" class="edit-mode" /></text>, style: "col2Width"),
+                grid.Column("AwayResult", "Away", format: @<text> <span class="display-mode"> <label id="lblAway">@item.AwayResult</label> </span>  <input type="text" id="Away" value="@item.AwayResult" class="edit-mode" /> </text>, style: "col2Width"),
+                grid.Column("Action", format: @<text>
+                                    <button class="edit-user display-mode">Edit</button>
+                                    <button class="save-user edit-mode">Save</button>
+                                    <button class="cancel-user edit-mode">Cancel</button>
+                                </text>, style: "col3Width", canSort: false)
+                ))
+
