@@ -5,17 +5,29 @@
 }
 
 <style type="text/css">
-    .edit-mode {}
-    .edit-user {}
-    .edit-user display-mode {}
-    .save-user edit-mode {}
-    .display-mode {}
-    .cancel-user {}
+    .edit-mode {
+    }
+
+    .edit-user {
+    }
+
+        .edit-user display-mode {
+        }
+
+    .save-user edit-mode {
+    }
+
+    .display-mode {
+    }
+
+    .cancel-user {
+    }
+
     .webgrid-table {
         font-family: Arial, Helvetica, sans-serif;
         font-size: 14px;
         font-weight: normal;
-        width: 650px;
+        width: 750px;
         display: table;
         border-collapse: collapse;
         border: solid px rgb(197, 197, 197);
@@ -47,11 +59,11 @@
     }
 
     .col1Width {
-        width: 50px;
+        width: 20px;
     }
 
     .col2Width {
-        width: 200px;
+        width: 300px;
     }
 </style>
 <script type="text/javascript">
@@ -91,28 +103,38 @@
 </script>
 
 <h2>Predictions</h2>
+@using (Html.BeginForm())
+{
+    <p>
+        Select Date: @Html.DropDownList("SelectedDate", "All")
+        <input type="submit" value="Filter" />
+    </p>
+}
+
 @{
     var grid = new WebGrid(Model);
 }
 
 <div id="gridContent" style=" padding:20px; ">
     @grid.GetHtml(
-            tableStyle: "webgrid-table",
-            headerStyle: "webgrid-header",
-            footerStyle: "webgrid-footer",
-            alternatingRowStyle: "webgrid-alternating-row",
-            selectedRowStyle: "webgrid-selected-row",
-            rowStyle: "webgrid-row-style",
-            mode: WebGridPagerModes.All,
-            columns:
-                grid.Columns(
-                grid.Column("PredictionId", format: @<text>  <span class="display-mode">@item.PredictionId </span> <label id="PredictionID" class="edit-mode">@item.PredictionId</label> </text>, style: "col1Width"),
-                grid.Column("HomeResult", "Home", format: @<text>  <span class="display-mode"> <label id="lblHome">@item.HomeResult</label> </span> <input type="text" id="Home" value="@item.HomeResult" class="edit-mode" /></text>, style: "col2Width"),
-                grid.Column("AwayResult", "Away", format: @<text> <span class="display-mode"> <label id="lblAway">@item.AwayResult</label> </span>  <input type="text" id="Away" value="@item.AwayResult" class="edit-mode" /> </text>, style: "col2Width"),
-                grid.Column("Action", format: @<text>
-                                    <button class="edit-user display-mode">Edit</button>
-                                    <button class="save-user edit-mode">Save</button>
-                                    <button class="cancel-user edit-mode">Cancel</button>
-                                </text>, style: "col3Width", canSort: false)
-                ))
+                        tableStyle: "webgrid-table",
+                        headerStyle: "webgrid-header",
+                        footerStyle: "webgrid-footer",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                        selectedRowStyle: "webgrid-selected-row",
+                        rowStyle: "webgrid-row-style",
+                        mode: WebGridPagerModes.All,
+                        columns:
+                            grid.Columns(
+                            grid.Column("Id", format: @<text>  <span class="display-mode">@item.PredictionId </span> <label id="PredictionID" class="edit-mode">@item.PredictionId</label> </text>, style: "col1Width"),
+                                    grid.Column("Home", format: @<text>  <span class="display-mode">@item.Fixture.HomeTeam.Name </span> <label id="HomeTeam" class="edit-mode">@item.Fixture.HomeTeam.Name</label> </text>, style: "col2Width"),
+                                            grid.Column("HomeResult", " ", format: @<text>  <span class="display-mode"> <label id="lblHome">@item.HomeResult</label> </span> <input type="number" min="0" id="Home" value="@item.HomeResult" class="edit-mode" /></text>, style: "col1Width"),
+                                                    grid.Column("Away", format: @<text>  <span class="display-mode">@item.Fixture.AwayTeam.Name </span> <label id="AwayTeam" class="edit-mode">@item.Fixture.AwayTeam.Name</label> </text>, style: "col2Width"),
+                                                            grid.Column("AwayResult", " ", format: @<text> <span class="display-mode"> <label id="lblAway">@item.AwayResult</label> </span>  <input type="number" min="0" id="Away" value="@item.AwayResult" class="edit-mode" /> </text>, style: "col1Width"),
+                                                                    grid.Column("Action", format: @<text>
+                                                                        <button class="edit-user display-mode">Edit</button>
+                                                                        <button class="save-user edit-mode">Save</button>
+                                                                        <button class="cancel-user edit-mode">Cancel</button>
+                                                                    </text>, style: "col3Width", canSort: false)
+                                                                          ))
 

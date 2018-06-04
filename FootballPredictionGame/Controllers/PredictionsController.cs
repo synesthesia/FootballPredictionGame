@@ -17,6 +17,14 @@ namespace FootballPredictionGame.Controllers
         // GET: Predictions
         public ActionResult Index()
         {
+            var fixtureDates = db.Fixtures.OrderBy(q => q.GameDate)
+                .ToList().Select(q => q.GameDate.Date.ToString("dd MMM yyyy")).Distinct()
+                .Select(q => new SelectListItem { Value = q, Text = q })
+                .ToList();
+
+            ViewBag.SelectedDate = fixtureDates;
+
+
             var predictions = db.Predictions.Where(p => p.PredictorId == 3)
                 .Include(p => p.Predictor)
                 .Include(p => p.Fixture)
