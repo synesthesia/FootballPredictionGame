@@ -15,20 +15,25 @@ namespace FootballPredictionGame.Controllers
         private PredictionContext db = new PredictionContext();
 
         // GET: Predictions
-        public ActionResult Index()
+        public ActionResult Index(DateTime? SelectedDate)
         {
             var fixtureDates = db.Fixtures.OrderBy(q => q.GameDate)
                 .ToList().Select(q => q.GameDate.Date.ToString("dd MMM yyyy")).Distinct()
                 .Select(q => new SelectListItem { Value = q, Text = q })
                 .ToList();
 
+           // var nextDate = fixtureDates.Where(f => DateTime.Parse(f.Value)  )
+
+            fixtureDates.Add(new SelectListItem {Value = DateTime.Today.ToShortDateString(), Text = "Next" });
+
             ViewBag.SelectedDate = fixtureDates;
 
+            DateTime fixDate = SelectedDate.GetValueOrDefault();
 
             var predictions = db.Predictions.Where(p => p.PredictorId == 3)
                 .Include(p => p.Predictor)
                 .Include(p => p.Fixture)
-                .ToList();
+                .ToList().Where(c => !SelectedDate.HasValue || c.Fixture.GameDate.Date == fixDate);
 
             return View(predictions);
         }
