@@ -46,6 +46,46 @@ Task("Default")
    });
 
 
+Task("AzureRM")
+  .ReportError(ex => Information(ex.Message))
+  .Does(() => {
+      if (resourceGroup == null){
+	      throw new Exception("ERROR: No resource group specified for AzureRm deployment"); 
+	  }
+	  if (tenantId == null){
+	      throw new Exception("ERROR: Cannot run AzureRM deployment as no tenant Id");
+	  }
+	  if (applicationId == null){
+	      throw new Exception("ERROR: Cannot run AzureRM deployment as no application Id");
+	  }
+	  if (applicationPass == null){
+	      throw new Exception("ERROR: Cannot run AzureRM deployment as no application secret");
+	  }
+	  
+	  if (!FileExists(templatePath)){
+	      throw new Exception("ERROR: Cannot find Azure RM template file at" + templatePath);
+	  }
+	  if (!FileExists(parametersPath)){
+	      throw new Exception("ERROR: Cannot find Azure RM parameters file at" + parametersPath);
+	  }
+	  
+      Information("Running AzureRM resource deployment task against resource group " + resourceGroup + " using SP app id " + applicationId);
+	  var credentials = AzureLogin(tenantId, applicationId,applicationPass);
+
+	  var template = FileReadText(File(templatePath));
+	  
+	  var parameters = FileReadText(File(parametersPath));
+	  var deploymentName = "Template" + DateTime.UtcNow.ToString("yyyyMMddhhmmss");
+	 
+	  if (AzureResourceGroupExists(credentials, subscriptionId, resourceGroup)){
+	  	  Information("resource group {0} exist in subscription {1}", resourceGroup, subscriptionId);
+		  DeployAzureResourceGroup(credentials, subscriptionId, resourceGroup, deploymentName, template, parameters);
+
+	  } else {
+	      Information("resource group {0} does not exists in subscription {1}", resourceGroup, subscriptionId);
+	  }
+   });
+
 //////////////////////////////////////////////////////////////////////
 // DO SOMETHING!!!!!
 //////////////////////////////////////////////////////////////////////
