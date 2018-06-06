@@ -1,10 +1,13 @@
 //////////////////////////////////////////////////////////////////////
 // DEPENDENCIES
 //////////////////////////////////////////////////////////////////////
-
+#addin nuget:?package=Newtonsoft.Json&version=10.0.3
+#addin nuget:?package=Cake.Json&version=2.0.0.27
+using Newtonsoft.Json;
 #addin "Cake.Azure"
 #addin "Cake.FileHelpers"
 #addin "Cake.Incubator"
+
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -12,6 +15,8 @@
 
 var target = Argument("target", "Default");
 var resourceGroup = Argument("resourceGroup", EnvironmentVariable("RESOURCEGROUP") ?? null);
+var sqlLogin = Argument("sqlLogin", EnvironmentVariable("SQLLOGIN") ?? null);
+var sqlPass = Argument("sqlPass", EnvironmentVariable("SQLPASS") ?? null);
 
 //////////////////////////////////////////////////////////////////////
 ///    Build Variables
@@ -68,13 +73,30 @@ Task("AzureRM")
 	  if (!FileExists(parametersPath)){
 	      throw new Exception("ERROR: Cannot find Azure RM parameters file at" + parametersPath);
 	  }
+	  if (sqlLogin == null){
+	      throw new Exception("ERROR: Cannot run AzureRM deployment as no SQL login");
+	  }
+	  if (sqlPass == null){
+	      throw new Exception("ERROR: Cannot run AzureRM deployment as no SQL password");
+	  }
 	  
       Information("Running AzureRM resource deployment task against resource group " + resourceGroup + " using SP app id " + applicationId);
 	  var credentials = AzureLogin(tenantId, applicationId,applicationPass);
 
 	  var template = FileReadText(File(templatePath));
 	  
-	  var parameters = FileReadText(File(parametersPath));
+	  //var parameters = FileReadText(File(parametersPath));
+	  var paramsFileJson = ParseJsonFromFile(File(parametersPath));
+	  var paramsObject = (JObject)paramsFileJson["parameters"];
+	  var loginObject = new JObject();
+	  loginObject["value"] = sqlLogin;
+	  paramsObject.Add("sqlAdministratorLogin", loginObject);
+	  var pwdObject = new JObject();
+	  pwdObject["value"] = sqlPass;
+	  paramsObject.Add("sqlAdministratorLoginPassword", pwdObject);
+	  var parameters = SerializeJson(paramsFileJson);
+	  Information(parameters);
+
 	  var deploymentName = "Template" + DateTime.UtcNow.ToString("yyyyMMddhhmmss");
 	 
 	  if (AzureResourceGroupExists(credentials, subscriptionId, resourceGroup)){

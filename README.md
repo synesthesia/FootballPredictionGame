@@ -38,4 +38,4 @@ And a pre-existing resource group in Azure for the application deployment
 
 Once those are in place you can run
 
-```.\build.ps1 -Target AzureRM -ScriptArgs '--resourceGroup=<NAMEOFRESOURCEGROUP>'|```
+```.\build.ps1 -target AzureRM -ScriptArgs '--resourceGroup=NAMEOFRESOURCEGROUP','--sqlLogin=SQLLOGIN','--sqlPass=SQLPASS'```
