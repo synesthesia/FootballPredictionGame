@@ -80,6 +80,8 @@ build_script:
 
 # to disable automatic builds
 #build: off
+
+
 #---------------------------------#
 #       test  configuration       #
 #---------------------------------#
@@ -89,7 +91,29 @@ test:
     except:
       - skip_appveyor
 
+#----------------------------------------------------------------#
+#       deployment configuration                                 #
+#                                                                #
+# to only deploy from master branch move this section            # 
+# into the into the master branch override section of this file  #
+# (remember to fix the indents correctly)                        #
+#----------------------------------------------------------------#
 
+deploy:
+    - provider: WebDeploy
+      server: https://football2018.scm.azurewebsites.net:443/msdeploy.axd?site=football2018
+      website: football2018
+      username: $football2018
+      password:
+        secure: DUa7R7vOdfehQyiuPUQGu0VsYHc+mXx7MyXPLe4XtbUdMGdANkN0iTy+CxFVa6zQncfV8LfW8TxtUkgmzr/iWQ==
+      ntlm: false
+      remove_files: true
+      artifact: FootballPredictionGame.zip
+
+
+#---------------------------------#
+#       Notifications             #
+#---------------------------------#
 notifications:
   - provider: Webhook
     url: https://outlook.office.com/webhook/7edad36f-cee4-497e-9af5-ca8f28fdc544@c5263ca1-a2e1-42fd-81bb-effcd1666efd/IncomingWebhook/d5a133f68fa843769577e831721be08e/486dadbf-58e0-4c8e-8922-df63ee598066
@@ -128,7 +152,7 @@ notifications:
     on_build_failure: true
     on_build_status_changed: true
 
-# here we are going to override common configuration
+# here we are going to override common configuration - note indents
 for:
 #################################################################################################################
 # override settings for `master` branch
