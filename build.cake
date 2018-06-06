@@ -50,6 +50,11 @@ Task("Default")
       Information("Cake is installed!");
    });
 
+Task("Transform")
+  .ReportError(ex => Information(ex.Message))
+  .Does(() => {
+      Information("Task 'Transform' does nothing");
+   });
 
 Task("AzureRM")
   .ReportError(ex => Information(ex.Message))
@@ -107,6 +112,7 @@ Task("AzureRM")
 	      Information("resource group {0} does not exists in subscription {1}", resourceGroup, subscriptionId);
 	  }
    });
+
 
 //////////////////////////////////////////////////////////////////////
 // DO SOMETHING!!!!!

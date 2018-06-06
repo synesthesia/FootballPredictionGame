@@ -1,0 +1,55 @@
+###############################################
+# common configuration for ALL branches
+###############################################
+
+
+configuration: Debug
+image: Visual Studio 2017
+version: 0.0.0.{build}
+
+init:
+  - git config --global core.autocrlf input
+    
+    
+    # clone directory
+clone_folder: c:\projects\footballpredictiongame
+
+environment:
+    APPVEYORAPI:
+      secure: 7Ed84TRzcrSQ8auippk9StbaLhigsturtNPiSEi/MLU=
+    nuget_user: developer@ssatuk.co.uk
+    nuget_password:
+      secure: 0LMdkuBPbT5J2yZZuyZBkQ==
+    PSAzureRMLabTool_TENANTID: c5263ca1-a2e1-42fd-81bb-effcd1666efd
+    PSAzureRMLabTool_APPID: fb08c8bf-7b34-4456-9895-afb8ae32db30 
+    PSAzureRMLabTool_APPSECRET:
+      secure: BQBWZeADInqcS8WdQcuth6xWzEAOhZeucXFrRaG998H+edthnZxoSzFsA5BO8qFP	
+    DEFAULT_AZURE_SUBSCRIPTION:
+      secure: veOQseWW9zf/blP9eyO57t/D0h7I3mgvXpzGB9zGfGuuBid4QSyEKyrVfrssXwFw
+    SQLLOGIN:
+      secure: khOVM+y/C1H0yHRU3mV2iQ==
+    SQLPASS:
+      secure: hV4z8fO+uqRiRFi7Uzw0Hg==
+    RESOURCEGROUP: football2018
+
+cache:
+  - packages -> **\packages.config  # preserve "packages" directory in the root but will reset it if packages.config is modified
+
+# scripts that run after cloning repository
+install:
+   - cmd: git submodule update --init --recursive
+   - ps: Invoke-WebRequest http://cakebuild.net/download/bootstrapper/windows -OutFile build.ps1
+   - ps: ./build.ps1  -Verbose -Target "Transform" -ScriptArgs '--settings_skipverification=true'
+   # if the commit message includes #AZURERM run a resource deployment, 
+   # using sql parameters from environment defined above
+   - ps: >-
+       if ($env:APPVEYOR_REPO_COMMIT_MESSAGE -like '*#AZURERM*'){
+         Write-Host $env:APPVEYOR_REPO_COMMIT_MESSAGE
+         Write-Host "Calling build task for AzureRM"
+         ./build.ps1  -Verbose -Target "AzureRM" -ScriptArgs '--settings_skipverification=true'
+       } else {
+         Write-Host $env:APPVEYOR_REPO_COMMIT_MESSAGE
+         Write-Host "Skipping build task for AzureRM"
+       }
+       
+   - nuget sources add -Name SSATFeed -Source https://ci.appveyor.com/nuget/julianelve-2wugvm77ww7n -UserName %nuget_user% -Password %nuget_password
