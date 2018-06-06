@@ -7,7 +7,7 @@ namespace FootballPredictionGame.DAL
     public class PredictionContext : DbContext
     {
 
-        public PredictionContext() : base("PredictionContext")
+        public PredictionContext() : base("DefaultConnection")
         {
         }
 
